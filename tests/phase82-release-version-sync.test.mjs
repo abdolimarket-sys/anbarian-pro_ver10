@@ -7,11 +7,7 @@ const read = (p) => readFileSync(new URL(`../${p}`, import.meta.url), 'utf8');
 test('web package, lockfile root, Android versionName and release notes agree', () => {
   const pkg = JSON.parse(read('package.json'));
   const lock = JSON.parse(read('package-lock.json'));
-  let gradle = null;
-  try { gradle = read('android/app/build.gradle'); }
-  catch (error) {
-    if (error?.code !== 'ENOENT') throw error;
-  }
+  const gradle = read('android/app/build.gradle');
   const serviceWorker = read('public/sw.js');
   let androidServiceWorker = null;
   try { androidServiceWorker = read('android/app/src/main/assets/public/sw.js'); }
@@ -23,10 +19,8 @@ test('web package, lockfile root, Android versionName and release notes agree', 
   assert.equal(pkg.version, '2.1.10');
   assert.equal(lock.version, pkg.version);
   assert.equal(lock.packages[''].version, pkg.version);
-  if (gradle !== null) {
-    assert.match(gradle, /versionCode\s+37/);
-    assert.ok(gradle.includes(`versionName "${pkg.version}"`));
-  }
+  assert.match(gradle, /versionCode\s+37/);
+  assert.ok(gradle.includes(`versionName '${pkg.version}'`) || gradle.includes(`versionName \"${pkg.version}\"`));
   assert.ok(serviceWorker.includes(`anbarin-v${pkg.version}`));
   if (androidServiceWorker !== null) {
     assert.ok(androidServiceWorker.includes(`anbarin-v${pkg.version}`));
