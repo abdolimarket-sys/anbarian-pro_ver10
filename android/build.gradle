@@ -1,0 +1,36 @@
+// Top-level build file for the Anbarin Capacitor Android project.
+buildscript {
+    ext {
+        minSdkVersion = 22
+        compileSdkVersion = 34
+        targetSdkVersion = 34
+        androidxActivityVersion = '1.8.0'
+        androidxAppCompatVersion = '1.6.1'
+        androidxCoordinatorLayoutVersion = '1.2.0'
+        androidxCoreVersion = '1.12.0'
+        androidxFragmentVersion = '1.6.2'
+        junitVersion = '4.13.2'
+        androidxJunitVersion = '1.1.5'
+        androidxEspressoCoreVersion = '3.5.1'
+    }
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.2.1'
+    }
+}
+
+apply from: 'variables.gradle'
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+tasks.register('clean', Delete) {
+    delete rootProject.layout.buildDirectory
+}
